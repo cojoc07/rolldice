@@ -101,4 +101,6 @@ public final class RollDice extends JavaPlugin {
 	   int range = (max - min) + 1;     
 	   return (int)(Math.random() * range) + min;
 	}
+	
+	// comentariu de test pt GIT
 }
