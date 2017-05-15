@@ -1,5 +1,6 @@
 package com.binslayer.rolldice;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import org.bukkit.Bukkit;
@@ -70,11 +71,15 @@ public final class RollDice extends JavaPlugin {
 	}
 
 	public void takeItem(Player p) {
-		int itemNumber = randomWithRange(0, p.getInventory().getContents().length - 1);
-		ItemStack item = null;
-		do {
-			item = p.getInventory().getContents()[itemNumber];
-		} while (item == null);
+		
+		ArrayList<Integer> arrItemsNotNull = new ArrayList<Integer>();
+		for (int i=0; i<p.getInventory().getContents().length; i++) {
+			if (p.getInventory().getContents()[i] != null) {
+				arrItemsNotNull.add(i);
+			}
+		}
+		int itemNumber = randomWithRange(0, arrItemsNotNull.size()-1);
+		ItemStack item = p.getInventory().getContents()[arrItemsNotNull.get(itemNumber)];
 
 		Bukkit.broadcastMessage("[Roll&Dice] GHINION MAXIM pentru " + p.getName()
 				+ "!! A rulat negativ si a pierdut din inventar: " + item.getType().toString());
