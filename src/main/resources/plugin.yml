@@ -1,0 +1,8 @@
+name: RollDice
+main: com.binslayer.rolldice.RollDice
+version: 1
+author: BinSlayer
+commands:
+   roll:
+      description: This is a roll command.
+      usage: /roll
