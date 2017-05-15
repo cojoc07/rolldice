@@ -3,6 +3,8 @@ package com.binslayer.rolldice;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Random;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -16,6 +18,7 @@ public final class RollDice extends JavaPlugin {
 	static HashMap<String, Long> alreadyUsed;
 	// static long timelimit = 180000L;
 	static long timelimit = 3000L;
+	Random r = new Random();
 
 	static int give_start = 0;
 	static int give_end = 7;
@@ -38,7 +41,7 @@ public final class RollDice extends JavaPlugin {
 					if (((alreadyUsed.containsKey(p.getName()))
 							&& (new Date().getTime() - ((Long) alreadyUsed.get(p.getName())).longValue() > timelimit))
 							|| (!alreadyUsed.containsKey(p.getName()))) {
-						int choice = randomWithRange(0, 11);
+						int choice = randomRangeBetter(0,12);
 						if ((choice >= give_start) && (choice <= give_end)) {
 							roll(p);
 						} else if ((choice >= nothing_start) && (choice <= nothing_end)) {
@@ -78,7 +81,7 @@ public final class RollDice extends JavaPlugin {
 				arrItemsNotNull.add(i);
 			}
 		}
-		int itemNumber = randomWithRange(0, arrItemsNotNull.size()-1);
+		int itemNumber = randomRangeBetter(0, arrItemsNotNull.size());
 		ItemStack item = p.getInventory().getContents()[arrItemsNotNull.get(itemNumber)];
 
 		Bukkit.broadcastMessage("[Roll&Dice] GHINION MAXIM pentru " + p.getName()
@@ -88,15 +91,26 @@ public final class RollDice extends JavaPlugin {
 
 	public void roll(Player p) {
 		Material[] materials = (Material[]) Material.class.getEnumConstants();
-		Material randomMaterial = materials[randomWithRange(0, materials.length - 1)];
+		Material randomMaterial = materials[randomRangeBetter(0, materials.length)];
 		ItemStack newItem = new ItemStack(randomMaterial, 1);
 		p.getInventory().addItem(new ItemStack[] { newItem });
 		Bukkit.broadcastMessage("[Roll&Dice] " + p.getName() + " a rulat si a castigat: " + randomMaterial.toString());
 	}
 
-	int randomWithRange(int min, int max) {
+	/*int randomWithRange(int min, int max) {
 		int range = max - min + 1;
 		return (int) (Math.random() * range) + min;
-	}
+	}*/
+	
+	
+	/* marginea de sus este exclusiva*/
+	int randomRangeBetter(int min, int max){
+		int nou = r.nextInt(max) ;
+		
+    		while (nou < min || nou > max){
+    			nou = r.nextInt(max);
+    		}
+		return nou;
+	 }
 }
-/* test */
+
