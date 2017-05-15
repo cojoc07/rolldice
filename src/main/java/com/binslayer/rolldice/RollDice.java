@@ -94,3 +94,4 @@ public final class RollDice extends JavaPlugin {
 		return (int) (Math.random() * range) + min;
 	}
 }
+/* test */
