@@ -6,9 +6,13 @@ import java.util.HashMap;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -52,8 +56,10 @@ public final class RollDice extends JavaPlugin {
 							takeItem(p);
 						} else if (choice == upsetti_baghetti) {
 							//p.getWorld().createExplosion(p.getLocation(), 5.0F);
-							Bukkit.broadcastMessage("[Roll&Dice] Situatie de cacat pentru " + p.getName()
-									+ "... a rulat explozie. Am ras.");
+							
+							spawnRandomMob(p);
+							
+							Bukkit.broadcastMessage("[Roll&Dice] Destul de rau pentru " + p.getName() + ". A castigat un mob");
 						}
 
 						alreadyUsed.put(p.getName(), Long.valueOf(new Date().getTime()));
@@ -103,5 +109,20 @@ public final class RollDice extends JavaPlugin {
 		int randomNum = r.nextInt((max - min)) + min;
 		return randomNum;
 	 }
+	
+	public void spawnRandomMob(Player p){
+		EntityType[] t = new EntityType[5];
+		t[0] = EntityType.SKELETON;
+		t[1] = EntityType.ZOMBIE;
+		t[2] = EntityType.VINDICATOR;
+		t[3] = EntityType.EVOKER;
+		t[4] = EntityType.STRAY;
+		
+		int randomMob = r.nextInt(5);
+		
+        World world = p.getWorld();
+        Location targetLocation = p.getLocation();
+        world.spawnEntity(targetLocation, t[randomMob]);
+	}
 }
 
