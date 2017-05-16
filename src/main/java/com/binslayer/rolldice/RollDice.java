@@ -148,3 +148,4 @@ public final class RollDice extends JavaPlugin {
 	}
 }
 
+/* test comment */
