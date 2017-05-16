@@ -105,12 +105,7 @@ public final class RollDice extends JavaPlugin {
 	
 	/* marginea de sus este exclusiva*/
 	int randomRangeBetter(int min, int max){
-		int nou = r.nextInt(max) ;
-		
-    		while (nou < min || nou > max){
-    			nou = r.nextInt(max);
-    		}
-		return nou;
+		return min + r.nextInt(max);
 	 }
 }
 
