@@ -32,7 +32,8 @@ public final class RollDice extends JavaPlugin {
 	static int nothing_end = 10;
 	static int takeaway = 8;
 
-	static int upsetti_baghetti = 11;
+	static int upset_start = 11;
+	static int upset_end = 12;
 
 	public void onEnable() {
 		alreadyUsed = new HashMap();
@@ -71,11 +72,8 @@ public final class RollDice extends JavaPlugin {
 									+ ".. Si-a incercat norocul insa n-a picat nimic la rulare");
 						} else if (choice == takeaway) {
 							takeItem(p);
-						} else if (choice == upsetti_baghetti) {
-							//p.getWorld().createExplosion(p.getLocation(), 5.0F);
-							
+						} else if (choice >= upset_start && choice <= upset_end) {
 							spawnRandomMob(p);
-							
 							Bukkit.broadcastMessage("[Roll&Dice] Destul de rau pentru " + p.getName() + ". A castigat un mob");
 						}
 
@@ -147,5 +145,3 @@ public final class RollDice extends JavaPlugin {
         world.spawnEntity(targetLocation, t[randomMob]);
 	}
 }
-
-/* test comment nou*/
