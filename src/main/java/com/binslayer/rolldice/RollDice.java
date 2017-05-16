@@ -96,16 +96,12 @@ public final class RollDice extends JavaPlugin {
 		p.getInventory().addItem(new ItemStack[] { newItem });
 		Bukkit.broadcastMessage("[Roll&Dice] " + p.getName() + " a rulat si a castigat: " + randomMaterial.toString());
 	}
-
-	/*int randomWithRange(int min, int max) {
-		int range = max - min + 1;
-		return (int) (Math.random() * range) + min;
-	}*/
 	
 	
 	/* marginea de sus este exclusiva*/
 	int randomRangeBetter(int min, int max){
-		return min + r.nextInt(max);
+		int randomNum = r.nextInt((max - min)) + min;
+		return randomNum;
 	 }
 }
 
