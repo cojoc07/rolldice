@@ -51,7 +51,7 @@ public final class RollDice extends JavaPlugin {
 						} else if (choice == takeaway) {
 							takeItem(p);
 						} else if (choice == upsetti_baghetti) {
-							p.getWorld().createExplosion(p.getLocation(), 5.0F);
+							//p.getWorld().createExplosion(p.getLocation(), 5.0F);
 							Bukkit.broadcastMessage("[Roll&Dice] Situatie de cacat pentru " + p.getName()
 									+ "... a rulat explozie. Am ras.");
 						}
