@@ -19,9 +19,11 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class RollDice extends JavaPlugin {
+	static ArrayList<Material> excludedMaterials;
+	
 	static HashMap<String, Long> alreadyUsed;
 	// static long timelimit = 180000L;
-	static long timelimit = 3000L;
+	static long timelimit = 180000L;
 	Random r = new Random();
 
 	static int give_start = 0;
@@ -34,6 +36,21 @@ public final class RollDice extends JavaPlugin {
 
 	public void onEnable() {
 		alreadyUsed = new HashMap();
+	}
+	
+	static {
+		excludedMaterials = new ArrayList<Material>();
+		excludedMaterials.add(Material.ELYTRA);
+		excludedMaterials.add(Material.RECORD_3);
+		excludedMaterials.add(Material.RECORD_4);
+		excludedMaterials.add(Material.RECORD_5);
+		excludedMaterials.add(Material.RECORD_6);
+		excludedMaterials.add(Material.RECORD_7);
+		excludedMaterials.add(Material.RECORD_8);
+		excludedMaterials.add(Material.RECORD_9);
+		excludedMaterials.add(Material.RECORD_10);
+		excludedMaterials.add(Material.RECORD_11);
+		excludedMaterials.add(Material.RECORD_12);
 	}
 
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -98,6 +115,11 @@ public final class RollDice extends JavaPlugin {
 	public void roll(Player p) {
 		Material[] materials = (Material[]) Material.class.getEnumConstants();
 		Material randomMaterial = materials[randomRangeBetter(0, materials.length)];
+		//e posibil ca materialul care a picat sa nu fie un item de tinut in inventar, caz in care cauti unul
+		//care sa fie mereu diferit de o lista de excluderi
+		while (excludedMaterials.contains(randomMaterial)) {
+			randomMaterial = materials[randomRangeBetter(0, materials.length)];
+		}
 		ItemStack newItem = new ItemStack(randomMaterial, 1);
 		p.getInventory().addItem(new ItemStack[] { newItem });
 		Bukkit.broadcastMessage("[Roll&Dice] " + p.getName() + " a rulat si a castigat: " + randomMaterial.toString());
