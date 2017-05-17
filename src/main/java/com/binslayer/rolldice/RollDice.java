@@ -116,7 +116,7 @@ public final class RollDice extends JavaPlugin {
 			p.getInventory().addItem(new ItemStack[] { newItem });
 			ItemStack[] arrayItems = p.getInventory().getContents();
 			isItemGiven = false;
-			for (int i=0; i<=arrayItems.length; i++) {
+			for (int i=0; i<arrayItems.length; i++) {
 				if (arrayItems[i] != null) {
 					if (randomMaterial.toString().equals(arrayItems[i].getType().toString())) {
 						isItemGiven = true;
