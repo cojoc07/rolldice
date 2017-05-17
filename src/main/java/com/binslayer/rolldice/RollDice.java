@@ -19,7 +19,6 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class RollDice extends JavaPlugin {
-	static ArrayList<Material> excludedMaterials;
 	
 	static HashMap<String, Long> alreadyUsed;
 	// static long timelimit = 180000L;
@@ -39,27 +38,13 @@ public final class RollDice extends JavaPlugin {
 		alreadyUsed = new HashMap();
 	}
 	
-	static {
-		excludedMaterials = new ArrayList<Material>();
-		excludedMaterials.add(Material.ELYTRA);
-		excludedMaterials.add(Material.RECORD_3);
-		excludedMaterials.add(Material.RECORD_4);
-		excludedMaterials.add(Material.RECORD_5);
-		excludedMaterials.add(Material.RECORD_6);
-		excludedMaterials.add(Material.RECORD_7);
-		excludedMaterials.add(Material.RECORD_8);
-		excludedMaterials.add(Material.RECORD_9);
-		excludedMaterials.add(Material.RECORD_10);
-		excludedMaterials.add(Material.RECORD_11);
-		excludedMaterials.add(Material.RECORD_12);
-	}
 
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if (command.getName().equalsIgnoreCase("roll")) {
 			if ((sender instanceof Player)) {
 				Player p = (Player) sender;
 
-				if (p.getInventory().firstEmpty() != -1) {
+				if (p.getInventory().firstEmpty() != -1 && hasMinimumOneItem(p)) {
 					if (((alreadyUsed.containsKey(p.getName()))
 							&& (new Date().getTime() - ((Long) alreadyUsed.get(p.getName())).longValue() > timelimit))
 							|| (!alreadyUsed.containsKey(p.getName()))) {
@@ -84,7 +69,7 @@ public final class RollDice extends JavaPlugin {
 						sender.sendMessage("ANTISPAM, mai ai de asteptat: " + wait + " secunde!!");
 					}
 				} else {
-					sender.sendMessage("AI INVENTARUL PLIN, NU POTI FOLOSI ROLL!");
+					sender.sendMessage("Eroare: Ori ai inventarul plin, ori n-ai niciun item in inventar pentru /roll");
 				}
 			} else {
 				sender.sendMessage("Nu merge din consola ci doar din joc!!");
@@ -92,6 +77,16 @@ public final class RollDice extends JavaPlugin {
 			return true;
 		}
 		return false;
+	}
+	
+	public static Boolean hasMinimumOneItem(Player p) {
+		Boolean ret = false;
+		for (int i=0; i<p.getInventory().getContents().length; i++) {
+			if (p.getInventory().getContents()[i] != null) {
+				ret = true;
+			}
+		}
+		return ret;
 	}
 
 	public void takeItem(Player p) {
@@ -112,14 +107,25 @@ public final class RollDice extends JavaPlugin {
 
 	public void roll(Player p) {
 		Material[] materials = (Material[]) Material.class.getEnumConstants();
-		Material randomMaterial = materials[randomRangeBetter(0, materials.length)];
-		//e posibil ca materialul care a picat sa nu fie un item de tinut in inventar, caz in care cauti unul
-		//care sa fie mereu diferit de o lista de excluderi
-		while (excludedMaterials.contains(randomMaterial)) {
+		Boolean isItemGiven;
+		Material randomMaterial;
+		do {
 			randomMaterial = materials[randomRangeBetter(0, materials.length)];
+		
+			ItemStack newItem = new ItemStack(randomMaterial, 1);
+			p.getInventory().addItem(new ItemStack[] { newItem });
+			ItemStack[] arrayItems = p.getInventory().getContents();
+			isItemGiven = false;
+			for (int i=0; i<=arrayItems.length; i++) {
+				if (arrayItems[i] != null) {
+					if (randomMaterial.toString().equals(arrayItems[i].getType().toString())) {
+						isItemGiven = true;
+					}
+				}
+			}
 		}
-		ItemStack newItem = new ItemStack(randomMaterial, 1);
-		p.getInventory().addItem(new ItemStack[] { newItem });
+		while (!isItemGiven);
+		
 		Bukkit.broadcastMessage("[Roll&Dice] " + p.getName() + " a rulat si a castigat: " + randomMaterial.toString());
 	}
 	
