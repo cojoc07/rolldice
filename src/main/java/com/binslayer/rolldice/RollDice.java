@@ -49,7 +49,7 @@ public final class RollDice extends JavaPlugin {
 					if (((alreadyUsed.containsKey(p.getName()))
 							&& (new Date().getTime() - ((Long) alreadyUsed.get(p.getName())).longValue() > timelimit))
 							|| (!alreadyUsed.containsKey(p.getName()))) {
-						int choice = randomRangeBetter(0,12);
+						int choice = randomRangeBetter(0,13);
 						if ((choice >= give_start) && (choice <= give_end)) {
 							roll(p);
 						} else if ((choice >= nothing_start) && (choice <= nothing_end)) {
