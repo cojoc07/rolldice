@@ -21,8 +21,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class RollDice extends JavaPlugin {
 	
 	static HashMap<String, Long> alreadyUsed;
-	// static long timelimit = 180000L;
+	
 	static long timelimit = 180000L;
+	
 	Random r = new Random();
 
 	static int give_start = 0;
@@ -99,10 +100,17 @@ public final class RollDice extends JavaPlugin {
 		}
 		int itemNumber = randomRangeBetter(0, arrItemsNotNull.size());
 		ItemStack item = p.getInventory().getContents()[arrItemsNotNull.get(itemNumber)];
+		
+		int oldAmount = item.getAmount();
+		int amountToLose = 1;
+		if (oldAmount > 1) {
+			amountToLose = randomRangeBetter(1, item.getAmount());
+		}
+		String itemLostSt = item.getType().toString();
+		item.setAmount(oldAmount - amountToLose);
 
 		Bukkit.broadcastMessage("[Roll&Dice] GHINION MAXIM pentru " + p.getName()
-				+ "!! A rulat negativ si a pierdut din inventar: " + item.getType().toString());
-		p.getInventory().remove(item);
+				+ "!! A rulat negativ si a pierdut din inventar " + amountToLose + " bucati de: " + itemLostSt);
 	}
 
 	public void roll(Player p) {
